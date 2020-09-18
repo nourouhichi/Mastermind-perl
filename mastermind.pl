@@ -77,3 +77,45 @@ if ($m == 2){
         chomp($code);
     }
 }
+
+for $i (1 .. $tries){
+    print "Guess code\n";
+    $guess = <STDIN>;
+    chomp($guess);
+    while (length $guess != 4 or &truecode($guess, $colors) == 0){
+        print "Wrong input\n";
+        print "Example: BWGB\n";
+        $guess = <STDIN>;
+        chomp($guess);
+    }
+    if ($guess eq $code){
+        print " U ARE A MASTERMIND ! \n";
+        last;
+    }
+    my @matches =();
+    for $i (0 .. length(guess) - 2){
+        $char1 = substr($guess, $i, 1);
+        $char2 = substr($code, $i, 1);
+        my $count = 0;
+        if (($char1 ~~ $code) == true){
+            $count += 1;
+            if (($char1 eq $char2)){
+                push(@matches, 2);
+            }
+            else if ($count != 1){
+                push(@matches, 1);
+            }
+            else {
+            push(@matches, 0);
+        } 
+        }
+        else {
+            push(@matches, 0);
+        } 
+    }
+    print @matches, "\n";
+    if (@matches == (2, 2, 2, 2)) {
+        print "Congrats";
+        last;
+    }
+}
